@@ -1,4 +1,4 @@
-# Offline OS
+# Farah OS
 
 Personal offline-first app launcher + apps. See `README.md` for architecture,
 how to add/remove apps, the backup/restore model, and deploy.

@@ -1,4 +1,4 @@
-/* Offline OS — shared storage layer.
+/* Farah OS — shared storage layer.
  *
  * Drop-in replacement for the non-standard `window.storage` bridge the apps
  * were prototyped against. Backed by localStorage so it actually persists on

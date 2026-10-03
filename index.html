@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Offline OS</title>
+<title>Farah OS</title>
 
 <!-- PWA / iOS home-screen -->
 <link rel="manifest" href="manifest.webmanifest">
@@ -20,7 +20,7 @@
 <body>
   <div class="header">
     <div>
-      <h1>Offline OS</h1>
+      <h1>Farah OS</h1>
       <p class="sub">Your apps. On your device. Offline.</p>
     </div>
     <div class="date" id="today">—</div>
@@ -102,7 +102,7 @@ async function refreshMeta(){
 function pad(n){return String(n).padStart(2,'0');}
 document.getElementById('export').onclick=async function(){
   var payload={
-    app:'offline-os', version:1,
+    app:'farah-os', version:1,
     exportedAt:new Date().toISOString(),
     data:window.storage.exportAll()
   };
@@ -111,7 +111,7 @@ document.getElementById('export').onclick=async function(){
   payload.data=window.storage.exportAll();
   var json=JSON.stringify(payload,null,2);
   var d=new Date();
-  var fn='offline-os-backup-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'.json';
+  var fn='farah-os-backup-'+d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate())+'.json';
 
   // iOS/Safari ignore <a download> and just open the JSON. Prefer the share
   // sheet with a file (→ "Save to Files" / iCloud Drive) when available.
@@ -120,7 +120,7 @@ document.getElementById('export').onclick=async function(){
     if(navigator.canShare){
       var file=new File([json],fn,{type:'application/json'});
       if(navigator.canShare({files:[file]})){
-        await navigator.share({files:[file], title:'Offline OS backup'});
+        await navigator.share({files:[file], title:'Farah OS backup'});
         shared=true;
       }
     }
@@ -155,7 +155,7 @@ document.getElementById('importFile').onchange=function(ev){
       alert('Restored. Your apps now have this data.');
       refreshMeta();
     }catch(e){
-      alert('That file could not be read as an Offline OS backup.');
+      alert('That file could not be read as an Farah OS backup.');
     }
   };
   reader.readAsText(f);

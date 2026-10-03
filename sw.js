@@ -1,7 +1,7 @@
-/* Offline OS — dashboard service worker.
+/* Farah OS — dashboard service worker.
  * Precaches the launcher shell and runtime-caches fonts so the dashboard
  * opens with zero network once it has been visited once. */
-var VERSION = 'oos-dash-v13';
+var VERSION = 'fos-dash-v1';
 var SHELL = [
   './',
   './index.html',
@@ -30,7 +30,7 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (names) {
       return Promise.all(names.map(function (n) {
-        if (n !== VERSION && n.indexOf('oos-dash') === 0) return caches.delete(n);
+        if (n !== VERSION && (n.indexOf('fos-dash') === 0 || n.indexOf('oos-dash') === 0)) return caches.delete(n);
       }));
     }).then(function () { return self.clients.claim(); })
   );

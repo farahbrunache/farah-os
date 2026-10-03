@@ -1,4 +1,4 @@
-# Offline OS
+# Farah OS
 
 A personal, offline-first daily-driver OS: a dashboard that launches a set of
 small apps. Built to spin tools up fast and ditch the ones that don't earn
@@ -17,7 +17,7 @@ their keep.
 ## Layout
 
 ```
-offline-os/
+farah-os/
   index.html              dashboard / launcher (a PWA itself)
   apps.json               the app registry
   manifest.webmanifest    dashboard PWA manifest
