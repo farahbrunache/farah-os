@@ -1,7 +1,7 @@
 /* Farah OS — dashboard service worker.
  * Precaches the launcher shell and runtime-caches fonts so the dashboard
  * opens with zero network once it has been visited once. */
-var VERSION = 'fos-dash-v1';
+var VERSION = 'fos-dash-v2';
 var SHELL = [
   './',
   './index.html',
