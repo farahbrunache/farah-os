@@ -118,6 +118,10 @@ async function renderApps(){
 
 function renderLinks(links){
   var box=document.getElementById('links');
+  // A to Z by name, so a new link lands in place wherever it's written in apps.json.
+  links=links.slice().sort(function(a,b){
+    return (a.name||'').localeCompare(b.name||'',undefined,{sensitivity:'base',numeric:true});
+  });
   box.innerHTML='<div class="app-grid">'+links.map(function(l){
     return '<div class="link-tile">'
       +'<a href="'+esc(l.url)+'" target="_blank" rel="noopener noreferrer">'
