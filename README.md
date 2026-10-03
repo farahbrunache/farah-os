@@ -8,7 +8,7 @@ their keep.
   `apps.json`. Kill a tool = delete the folder + remove its line.
 - **Offline-first** — each app is an installable PWA with a service worker, so
   it opens with zero network once visited.
-- **Shared design system** — the One Percent palette (warm dark, terracotta accent) lives in `shared/theme.css`;
+- **Shared design system** — the One Percent palette (dark sage, gold accent) lives in `shared/theme.css`;
   every app inherits it.
 - **Link by URL** — the dashboard is just a registry of links. An app can live
   here as a subfolder *or* on its own host (Vercel, Fly, another GitHub Pages
