@@ -1,18 +1,18 @@
 /* Farah OS — shared design system
-   Sodium-vapor highway amber on dark.
+   One Percent's warm dark palette, terracotta accent.
    Every app links this file so all of the OS shares one look. */
 
 :root{
-  --bg:#16171b;
-  --panel:#1f2127;
-  --panel-2:#262931;
-  --line:#33373f;
-  --amber:#ffb000;       /* sodium-vapor highway amber */
-  --amber-dim:#7a5500;
-  --text:#e9e6df;
-  --muted:#8d909a;
-  --green:#4caf7d;
-  --red:#d96a5a;
+  --bg:#16130f;
+  --panel:#1e1a15;
+  --panel-2:#27221b;
+  --line:#322c23;
+  --amber:#d98a6a;       /* One Percent terracotta (name kept so apps need no edits) */
+  --amber-dim:#7a4a36;
+  --text:#f2eee4;
+  --muted:#9a9183;
+  --green:#7fc79c;
+  --red:#e8806b;
   --radius:16px;
 }
 
@@ -51,7 +51,7 @@ input:focus,textarea:focus{outline:none;border-color:var(--amber-dim);}
   background:var(--panel-2);color:var(--text);font-size:30px;font-weight:600;
   display:flex;align-items:center;justify-content:center;cursor:pointer;
   user-select:none;transition:transform .05s,background .15s;}
-.step:active{transform:scale(.92);background:#30343d;}
+.step:active{transform:scale(.92);background:#332d24;}
 .readout{flex:1;text-align:center;}
 .readout .num{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;
   font-size:54px;line-height:1;color:var(--amber);}
@@ -68,11 +68,11 @@ input:focus,textarea:focus{outline:none;border-color:var(--amber-dim);}
 .opt:active{transform:scale(.97);}
 .opt.on-green{background:var(--green);border-color:var(--green);color:#0c1a13;}
 .opt.on-red{background:var(--red);border-color:var(--red);color:#1a0c0a;}
-.opt.on-amber{background:var(--amber);border-color:var(--amber);color:#1a1300;}
+.opt.on-amber{background:var(--amber);border-color:var(--amber);color:#16130f;}
 
 /* primary button */
 .btn{width:100%;padding:18px;border:none;border-radius:14px;background:var(--amber);
-  color:#1a1300;font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;
+  color:#16130f;font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;
   font-size:19px;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;
   transition:transform .05s;}
 .btn:active{transform:scale(.98);}
