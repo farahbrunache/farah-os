@@ -1,6 +1,6 @@
 /* Plaintext — service worker. Precaches the app shell (incl. shared fonts +
  * storage helper) so it runs fully offline. Bump VERSION to push updates. */
-var VERSION = 'plaintext-v6';
+var VERSION = 'plaintext-v7';
 var SHELL = [
   './',
   './index.html',
