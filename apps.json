@@ -30,5 +30,117 @@
       "icon": "🚻",
       "status": "external"
     }
+  ],
+  "links": [
+    {
+      "name": "Charging the Future",
+      "url": "https://www.chargingthefuture.com",
+      "icon": "⚡"
+    },
+    {
+      "name": "CTF on GitHub Pages",
+      "url": "https://chargingthefuture.github.io/chargingthefuture/",
+      "icon": "⚡"
+    },
+    {
+      "name": "CTF App",
+      "url": "https://app.chargingthefuture.com",
+      "icon": "📱"
+    },
+    {
+      "name": "Offline OS",
+      "url": "https://chargingthefuture.github.io/offline-os",
+      "icon": "📴"
+    },
+    {
+      "name": "Quora Paste Sheet (full)",
+      "url": "https://raw.githubusercontent.com/chargingthefuture/wiki-site/main/wiki-site/QUORA_PASTE_SHEET_FULL.txt",
+      "icon": "📄"
+    },
+    {
+      "name": "Quora Paste Sheet",
+      "url": "https://raw.githubusercontent.com/chargingthefuture/wiki-site/refs/heads/main/wiki-site/QUORA_PASTE_SHEET.txt",
+      "icon": "📄"
+    },
+    {
+      "name": "Skills Economy · People",
+      "url": "https://skillseconomy.quora.com/people",
+      "icon": "👥"
+    },
+    {
+      "name": "Skills Economy",
+      "url": "https://skillseconomy.quora.com",
+      "icon": "💬"
+    },
+    {
+      "name": "Farah OS (live)",
+      "url": "https://farahbrunache.github.io/farah-os/",
+      "icon": "🏠"
+    },
+    {
+      "name": "CTF RSS",
+      "url": "https://rss.ChargingTheFuture.com",
+      "icon": "📡"
+    },
+    {
+      "name": "Farah App",
+      "url": "https://app.farahbrunache.com",
+      "icon": "📱"
+    },
+    {
+      "name": "Peace Battle 2",
+      "url": "https://chargingthefuture.github.io/chargingthefuture/peace-battle-2",
+      "icon": "🕊️"
+    },
+    {
+      "name": "Skills Economy · Quality",
+      "url": "https://skillseconomy.quora.com/quality",
+      "icon": "✅"
+    },
+    {
+      "name": "TTS Paste Sheet",
+      "url": "https://raw.githubusercontent.com/chargingthefuture/wiki-site/main/wiki-site/TTS_PASTE_SHEET.txt",
+      "icon": "🔊"
+    },
+    {
+      "name": "Neon Console",
+      "url": "https://console.neon.tech/app/projects",
+      "icon": "🗄️"
+    },
+    {
+      "name": "GitHub",
+      "url": "https://github.com",
+      "icon": "🐙"
+    },
+    {
+      "name": "Claude · New Chat",
+      "url": "https://claude.ai/new",
+      "icon": "✳️"
+    },
+    {
+      "name": "Claude Platform",
+      "url": "https://platform.claude.com/dashboard",
+      "icon": "🔑"
+    },
+    {
+      "name": "Design CTF App",
+      "url": "https://design-ctf-app.vercel.app",
+      "icon": "🎨"
+    },
+    {
+      "name": "SimpleLogin",
+      "url": "https://app.simplelogin.io/dashboard",
+      "icon": "✉️"
+    },
+    {
+      "name": "Clerk Dashboard",
+      "url": "https://dashboard.clerk.com/apps",
+      "icon": "🔐"
+    },
+    {
+      "name": "Render Dashboard",
+      "url": "https://dashboard.render.com/index.html",
+      "icon": "☁️"
+    }
   ]
 }
