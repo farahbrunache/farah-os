@@ -66,6 +66,17 @@ Just add it to the registry with a full URL:
 
 External links open in a new tab; internal ones navigate in place.
 
+### Links
+
+Plain bookmarks go in the `links` array of `apps.json` and render under **Links**:
+
+```json
+{ "name": "GitHub", "url": "https://github.com", "icon": "🐙" }
+```
+
+Each tile opens in a new tab and shows the URL as selectable plain text with a
+**Copy URL** button, for when the new tab doesn't land in the browser you want.
+
 ## Where your data lives (read this)
 
 Apps store data in **`localStorage`**, on the device, scoped to this site's
