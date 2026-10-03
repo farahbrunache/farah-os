@@ -106,7 +106,9 @@ async function load(){
   render();
 }
 async function persist(){ try{ await window.storage.set(SKEY, JSON.stringify(store)); }catch(e){} }
-function queueSave(){ clearTimeout(saveT); saveT=setTimeout(persist,400); }
+function queueSave(){ clearTimeout(saveT); saveT=setTimeout(function(){ saveT=null; persist(); },400); }
+/* write only an edit still waiting to save, so a stale page can't overwrite newer data (e.g. a backup import) */
+function flush(){ if(saveT){ clearTimeout(saveT); saveT=null; persist(); } }
 
 /* ---------- list ---------- */
 function render(){ if(vw==='editor' && activeDoc()) renderEditor(); else { vw='list'; renderList(); } }
@@ -239,8 +241,13 @@ document.getElementById('importFile').onchange=function(ev){
 };
 
 /* persist on background/close */
-window.addEventListener('pagehide', persist);
-document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden') persist(); });
+window.addEventListener('pagehide', flush);
+document.addEventListener('visibilitychange', function(){
+  if(document.visibilityState==='hidden') flush();
+  else if(vw==='list') load();
+});
+/* back/forward cache restores the old in-memory copy; re-read storage */
+window.addEventListener('pageshow', function(e){ if(e.persisted && vw==='list') load(); });
 
 load();
 </script>
