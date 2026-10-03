@@ -42,6 +42,12 @@
       <button class="btn ghost" id="importBtn">Import…</button>
     </div>
     <input type="file" id="importFile" hidden>
+    <button class="btn ghost" id="pasteBtn" style="margin-top:10px">Paste backup…</button>
+    <div id="pasteBox" hidden style="margin-top:10px">
+      <p class="sub" style="margin:0 0 8px">Open the backup file, select all, copy, then paste it here.</p>
+      <textarea id="pasteText" rows="6" placeholder='{"app":"farah-os", …}' spellcheck="false"></textarea>
+      <button class="btn" id="pasteRestore" style="margin-top:10px">Restore pasted backup</button>
+    </div>
   </div>
 
 <script src="shared/storage.js"></script>
@@ -140,26 +146,38 @@ document.getElementById('export').onclick=async function(){
 };
 
 document.getElementById('importBtn').onclick=function(){ document.getElementById('importFile').click(); };
+function restoreText(text){
+  try{
+    var parsed=JSON.parse(text);
+    var data=(parsed&&parsed.data)?parsed.data:parsed;
+    if(typeof data!=='object'||data===null) throw new Error('bad file');
+    var keys=Object.keys(data);
+    var ok=confirm('Restore '+keys.length+' item(s) from this backup?\n\nThis merges into your current data (existing keys are overwritten).');
+    if(!ok) return false;
+    window.storage.importAll(data,{merge:true});
+    alert('Restored. Your apps now have this data.');
+    refreshMeta();
+    return true;
+  }catch(e){
+    alert('That could not be read as a Farah OS backup.');
+    return false;
+  }
+}
 document.getElementById('importFile').onchange=function(ev){
   var f=ev.target.files[0]; if(!f) return;
   var reader=new FileReader();
-  reader.onload=function(){
-    try{
-      var parsed=JSON.parse(reader.result);
-      var data=(parsed&&parsed.data)?parsed.data:parsed;
-      if(typeof data!=='object'||data===null) throw new Error('bad file');
-      var keys=Object.keys(data);
-      var ok=confirm('Restore '+keys.length+' item(s) from this backup?\n\nThis merges into your current data (existing keys are overwritten).');
-      if(!ok) return;
-      window.storage.importAll(data,{merge:true});
-      alert('Restored. Your apps now have this data.');
-      refreshMeta();
-    }catch(e){
-      alert('That file could not be read as an Farah OS backup.');
-    }
-  };
+  reader.onload=function(){ restoreText(reader.result); };
   reader.readAsText(f);
   ev.target.value='';
+};
+document.getElementById('pasteBtn').onclick=function(){
+  var box=document.getElementById('pasteBox'); box.hidden=!box.hidden;
+  if(!box.hidden) document.getElementById('pasteText').focus();
+};
+document.getElementById('pasteRestore').onclick=function(){
+  var ta=document.getElementById('pasteText');
+  if(!ta.value.trim()){ alert('Paste the backup text first.'); return; }
+  if(restoreText(ta.value)){ ta.value=''; document.getElementById('pasteBox').hidden=true; }
 };
 
 renderApps();
