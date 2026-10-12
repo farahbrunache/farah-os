@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>White Noise</title>
+
+<!-- PWA / iOS home-screen -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#151918">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="White Noise">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+
+<link rel="stylesheet" href="../../shared/fonts.css">
+<link rel="stylesheet" href="../../shared/theme.css">
+<style>
+  .back{display:inline-block;color:var(--muted);text-decoration:none;font-size:13px;margin-bottom:4px;}
+  .back:hover{color:var(--amber);}
+
+  .play{display:block;width:150px;height:150px;margin:8px auto 18px;border-radius:50%;
+    border:1px solid var(--line);background:var(--panel-2);color:var(--amber);font-size:52px;
+    cursor:pointer;user-select:none;transition:transform .05s,background .15s;}
+  .play:active{transform:scale(.95);}
+  .play.on{background:var(--amber);border-color:var(--amber);color:#151918;}
+  .state{text-align:center;font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted);margin-bottom:6px;}
+
+  input[type=range]{padding:0;border:none;background:none;accent-color:var(--amber);height:28px;}
+
+  .dl{width:100%;border:1px solid var(--amber);background:var(--amber);color:#151918;
+    font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.04em;font-size:15px;border-radius:10px;padding:13px;cursor:pointer;}
+  .dl:disabled{opacity:.6;cursor:default;}
+  .note{color:var(--muted);font-size:12px;line-height:1.5;margin:10px 0 0;}
+</style>
+</head>
+<body>
+  <a class="back" href="../../" id="backOS">&lsaquo; OS</a>
+  <div class="header"><div><h1>White Noise</h1><p class="sub">Generated on the phone. No network needed.</p></div></div>
+
+  <button class="play" id="play" aria-label="Play">&#9654;</button>
+  <div class="state" id="state">Stopped</div>
+
+  <div class="card">
+    <div class="lbl">Volume <span class="hint" id="volTxt"></span></div>
+    <input type="range" id="vol" min="0" max="100" step="1">
+  </div>
+
+  <div class="card">
+    <div class="lbl">Download <span class="hint">60 min WAV · 159 MB</span></div>
+    <button class="dl" id="dl">Download 60 min</button>
+    <p class="note">Save it to Files or a music app to play with the screen locked or in the background — iOS pauses in-browser audio when the phone locks.</p>
+  </div>
+
+<script src="../../shared/storage.js"></script>
+<script src="../../shared/pwa.js"></script>
+<script>
+registerPWA('sw.js');
+(function(){var b=document.getElementById('backOS');if(b){var m=location.pathname.match(/^(.*?\/)apps\//);if(m)b.href=m[1];}})();
+
+var SKEY='white-noise';
+var RATE=44100, AMP=0.35;
+var MIN=60;
+var store={vol:60};
+var ctx=null, gain=null, src=null, playing=false;
+
+function $(id){ return document.getElementById(id); }
+async function load(){
+  try{ var r=await window.storage.get(SKEY); if(r&&r.value) store=Object.assign(store,JSON.parse(r.value)); }catch(e){}
+  render();
+}
+async function persist(){ try{ await window.storage.set(SKEY, JSON.stringify(store)); }catch(e){} }
+
+function render(){
+  $('vol').value=store.vol;
+  $('volTxt').textContent=store.vol+'%';
+  $('play').classList.toggle('on',playing);
+  $('play').innerHTML=playing?'&#10074;&#10074;':'&#9654;';
+  $('play').setAttribute('aria-label',playing?'Stop':'Play');
+  $('state').textContent=playing?'Playing':'Stopped';
+}
+function level(){ var v=store.vol/100; return v*v; }
+
+/* ---- live playback: a 10 s random buffer on loop ---- */
+function start(){
+  if(!ctx){
+    ctx=new (window.AudioContext||window.webkitAudioContext)();
+    gain=ctx.createGain(); gain.gain.value=0; gain.connect(ctx.destination);
+  }
+  ctx.resume();
+  var n=ctx.sampleRate*10, buf=ctx.createBuffer(1,n,ctx.sampleRate), d=buf.getChannelData(0);
+  for(var i=0;i<n;i++) d[i]=(Math.random()*2-1)*AMP;
+  src=ctx.createBufferSource(); src.buffer=buf; src.loop=true; src.connect(gain); src.start();
+  var t=ctx.currentTime;
+  gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(0,t); gain.gain.linearRampToValueAtTime(level(),t+0.4);
+  playing=true; render();
+}
+function stop(){
+  var t=ctx.currentTime, s=src;
+  gain.gain.cancelScheduledValues(t); gain.gain.setValueAtTime(gain.gain.value,t); gain.gain.linearRampToValueAtTime(0,t+0.25);
+  setTimeout(function(){ try{ s.stop(); }catch(e){} },300);
+  src=null; playing=false; render();
+}
+$('play').addEventListener('click',function(){ playing?stop():start(); });
+
+$('vol').addEventListener('input',function(){
+  store.vol=+this.value; $('volTxt').textContent=store.vol+'%';
+  if(playing) gain.gain.setTargetAtTime(level(),ctx.currentTime,0.05);
+});
+$('vol').addEventListener('change',persist);
+
+/* ---- download: 60 min 8-bit mono WAV, built in 1 s chunks. 8-bit halves the
+ * size (159 MB vs 318 MB); its quantization error is itself white noise ~40 dB
+ * under the signal, so it sounds the same. Loops cleanly in any player. ---- */
+function wavHeader(bytes){
+  var h=new DataView(new ArrayBuffer(44));
+  function str(o,s){ for(var i=0;i<s.length;i++) h.setUint8(o+i,s.charCodeAt(i)); }
+  str(0,'RIFF'); h.setUint32(4,36+bytes,true); str(8,'WAVE');
+  str(12,'fmt '); h.setUint32(16,16,true); h.setUint16(20,1,true); h.setUint16(22,1,true);
+  h.setUint32(24,RATE,true); h.setUint32(28,RATE,true); h.setUint16(32,1,true); h.setUint16(34,8,true);
+  str(36,'data'); h.setUint32(40,bytes,true);
+  return h.buffer;
+}
+$('dl').addEventListener('click',function(){
+  var btn=this, secs=MIN*60, parts=[], k=0, peak=127*AMP;
+  btn.disabled=true;
+  (function chunk(){
+    var end=Math.min(k+15,secs);
+    for(;k<end;k++){
+      var a=new Uint8Array(RATE);
+      for(var i=0;i<RATE;i++) a[i]=128+Math.round((Math.random()*2-1)*peak);
+      parts.push(a);
+    }
+    btn.textContent='Building… '+Math.round(k/secs*100)+'%';
+    if(k<secs){ setTimeout(chunk,0); return; }
+    parts.unshift(wavHeader(secs*RATE));
+    var url=URL.createObjectURL(new Blob(parts,{type:'audio/wav'}));
+    var a=document.createElement('a'); a.href=url; a.download='white-noise-'+MIN+'min.wav';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(url); },60000);
+    btn.disabled=false; btn.textContent='Download '+MIN+' min';
+  })();
+});
+
+load();
+</script>
+</body>
+</html>
