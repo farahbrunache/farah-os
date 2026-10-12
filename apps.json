@@ -50,6 +50,11 @@
       "icon": "⚡"
     },
     {
+      "name": "CTF Releases",
+      "url": "https://github.com/chargingthefuture/chargingthefuture/releases",
+      "icon": "🏷️"
+    },
+    {
       "name": "CTF App",
       "url": "https://app.chargingthefuture.com",
       "icon": "📱"
