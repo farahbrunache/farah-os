@@ -24,6 +24,13 @@
       "status": "active"
     },
     {
+      "name": "White Noise",
+      "blurb": "White noise player — download a WAV to play offline",
+      "url": "apps/white-noise/",
+      "icon": "🌫️",
+      "status": "active"
+    },
+    {
       "name": "Parity",
       "blurb": "Offline restroom & rest stop finder for long-haul drivers — what drivers found, not just what the map lists. Nothing leaves the phone.",
       "url": "https://chargingthefuture.github.io/parity/",
