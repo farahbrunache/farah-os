@@ -36,6 +36,13 @@
       "url": "apps/coffee-shop/",
       "icon": "☕",
       "status": "active"
+    },
+    {
+      "name": "PB2",
+      "blurb": "Peace Battle 2",
+      "url": "https://chargingthefuture.github.io/chargingthefuture/peace-battle-2",
+      "icon": "🕊️",
+      "status": "external"
     }
   ],
   "links": [
@@ -113,11 +120,6 @@
       "name": "OP Landing",
       "url": "https://farahbrunache.com",
       "icon": "🌐"
-    },
-    {
-      "name": "Peace Battle 2",
-      "url": "https://chargingthefuture.github.io/chargingthefuture/peace-battle-2",
-      "icon": "🕊️"
     },
     {
       "name": "Quora Quality",
