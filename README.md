@@ -35,8 +35,7 @@ farah-os/
     backing-log/          truck backing reps: pull-ups, time, near-misses per day
 ```
 
-`apps.json` also lists apps that live elsewhere (Parity) as
-`external` entries.
+`apps.json` can also list apps that live elsewhere as `external` entries.
 
 ## Adding an app
 

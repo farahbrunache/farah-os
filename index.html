@@ -30,6 +30,8 @@
   border:1px solid var(--line);background:var(--panel-2);color:var(--text);font:inherit;font-size:14px;
   font-weight:600;text-align:center;cursor:pointer;touch-action:manipulation;}
 .link-tile .copy.ok{color:var(--green);border-color:#2c5a44;}
+.link-search{margin-bottom:12px;}
+#links [hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -44,6 +46,7 @@
   <div id="apps"><div class="loading">Loading apps…</div></div>
 
   <div class="section-title">Links</div>
+  <input type="search" id="linkSearch" class="link-search" placeholder="Search links" aria-label="Search links" autocomplete="off" spellcheck="false">
   <div id="links"></div>
 
   <div class="section-title">Data &amp; backup</div>
@@ -124,14 +127,26 @@ function renderLinks(links){
     return (a.name||'').localeCompare(b.name||'',undefined,{sensitivity:'base',numeric:true});
   });
   box.innerHTML='<div class="app-grid">'+links.map(function(l){
-    return '<div class="link-tile">'
+    return '<div class="link-tile" data-q="'+esc(((l.name||'')+' '+l.url).toLowerCase())+'">'
       +'<a href="'+esc(l.url)+'" target="_blank" rel="noopener noreferrer">'
       +'<span class="ico">'+esc(l.icon||'🔗')+'</span><span class="name">'+esc(l.name)+'</span></a>'
       +'<span class="url">'+esc(l.url)+'</span>'
       +'<button class="copy" type="button" data-url="'+esc(l.url)+'">Copy URL</button>'
       +'</div>';
-  }).join('')+'</div>';
+  }).join('')+'</div><div class="empty" id="linksNone" hidden>No links match.</div>';
+  filterLinks();
 }
+
+// Every word typed must appear in the link's name or URL.
+function filterLinks(){
+  var words=document.getElementById('linkSearch').value.toLowerCase().split(/\s+/).filter(Boolean), shown=0;
+  document.querySelectorAll('#links .link-tile').forEach(function(t){
+    var q=t.dataset.q, hit=words.every(function(w){ return q.indexOf(w)>=0; });
+    t.hidden=!hit; if(hit) shown++;
+  });
+  var none=document.getElementById('linksNone'); if(none) none.hidden=shown>0;
+}
+document.getElementById('linkSearch').addEventListener('input',filterLinks);
 
 // Clipboard API needs a secure context and can be refused; fall back to a hidden textarea.
 function copyText(t){
