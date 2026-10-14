@@ -55,7 +55,7 @@
       "icon": "🏷️"
     },
     {
-      "name": "Wiki Ops Stats",
+      "name": "CTF Blog Stats",
       "url": "https://wiki-site-operations.up.railway.app/api/stats?days=all",
       "icon": "📊"
     },
