@@ -308,6 +308,11 @@
       "name": "Infisical",
       "url": "https://infisical-staging-f62b.up.railway.app/",
       "icon": "🔒"
+    },
+    {
+      "name": "GitHub Repos",
+      "url": "https://github.com/repos",
+      "icon": "📦"
     }
   ]
 }
