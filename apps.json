@@ -168,6 +168,161 @@
       "name": "PB2",
       "url": "https://chargingthefuture.github.io/chargingthefuture/peace-battle-2",
       "icon": "🕊️"
+    },
+    {
+      "name": "Unleash",
+      "url": "https://primary-unleash.up.railway.app/login",
+      "icon": "🚩"
+    },
+    {
+      "name": "Ops - Railway",
+      "url": "https://railway.com/dashboard",
+      "icon": "🚂"
+    },
+    {
+      "name": "CTF GitHub",
+      "url": "https://github.com/chargingthefuture/chargingthefuture",
+      "icon": "🐙"
+    },
+    {
+      "name": "UpStash",
+      "url": "https://console.upstash.com",
+      "icon": "🟢"
+    },
+    {
+      "name": "Supabase",
+      "url": "https://supabase.com/dashboard/projects",
+      "icon": "⚡"
+    },
+    {
+      "name": "Expo",
+      "url": "https://expo.dev",
+      "icon": "📲"
+    },
+    {
+      "name": "Retool",
+      "url": "https://chargingthefuture.retool.com",
+      "icon": "🧰"
+    },
+    {
+      "name": "Stream",
+      "url": "https://dashboard.getstream.io",
+      "icon": "💬"
+    },
+    {
+      "name": "Wiki",
+      "url": "https://github.com/chargingthefuture/mono/wiki",
+      "icon": "📚"
+    },
+    {
+      "name": "Earn",
+      "url": "https://earnhaus.com/members",
+      "icon": "💵"
+    },
+    {
+      "name": "Stripe",
+      "url": "https://dashboard.stripe.com",
+      "icon": "💳"
+    },
+    {
+      "name": "Notes - iCloud",
+      "url": "https://www.icloud.com/notes/",
+      "icon": "🗒️"
+    },
+    {
+      "name": "Look Ma",
+      "url": "https://www.chargingthefuture.com/look-ma-i-fixed-it",
+      "icon": "🔧"
+    },
+    {
+      "name": "Vercel",
+      "url": "https://vercel.com/dashboard",
+      "icon": "▲"
+    },
+    {
+      "name": "SleekBio",
+      "url": "https://sleekbio.com/dashboard",
+      "icon": "🔗"
+    },
+    {
+      "name": "Actions Github",
+      "url": "https://github.com/chargingthefuture/mono/actions",
+      "icon": "⚙️"
+    },
+    {
+      "name": "Wistia",
+      "url": "https://chargingthefuture.wistia.com/home",
+      "icon": "🎬"
+    },
+    {
+      "name": "StrawPoll",
+      "url": "https://strawpoll.com/create/",
+      "icon": "🗳️"
+    },
+    {
+      "name": "Duck.ai",
+      "url": "https://duckduckgo.com/?q=DuckDuckGo+AI+Chat&ia=chat&duckai=1",
+      "icon": "🦆"
+    },
+    {
+      "name": "Cloudflare",
+      "url": "https://dash.cloudflare.com/login",
+      "icon": "🟠"
+    },
+    {
+      "name": "Admin log - Quora",
+      "url": "https://tiskillsnetwork.quora.com/admin_log",
+      "icon": "📋"
+    },
+    {
+      "name": "Can I get a copy of my data? – Quora Help Center",
+      "url": "https://help.quora.com/hc/en-us/articles/360000839503-Can-I-get-a-copy-of-my-data?share=1",
+      "icon": "❓"
+    },
+    {
+      "name": "Quora",
+      "url": "https://www.quora.com",
+      "icon": "💬"
+    },
+    {
+      "name": "Showmyip.com",
+      "url": "https://showmyip.com",
+      "icon": "🌍"
+    },
+    {
+      "name": "Pedigree101 - Quora",
+      "url": "https://www.quora.com/profile/Pedigree101",
+      "icon": "👤"
+    },
+    {
+      "name": "Emoji",
+      "url": "https://emojirepo.org/",
+      "icon": "😀"
+    },
+    {
+      "name": "Grammarly",
+      "url": "https://app.grammarly.com",
+      "icon": "✍️"
+    },
+    {
+      "name": "Drive iCloud",
+      "url": "https://www.icloud.com/iclouddrive",
+      "icon": "☁️"
+    },
+    {
+      "name": "Midjourney",
+      "url": "https://www.midjourney.com/imagine",
+      "icon": "🖼️"
+    },
+    {
+      "name": "Gitpod",
+      "url": "https://app.gitpod.io/ai",
+      "icon": "🧪"
+    },
+    {
+      "name": "Infisical",
+      "url": "https://infisical-staging-f62b.up.railway.app/",
+      "icon": "🔒"
     }
   ]
 }
