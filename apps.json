@@ -210,11 +210,6 @@
       "icon": "💬"
     },
     {
-      "name": "Wiki",
-      "url": "https://github.com/chargingthefuture/mono/wiki",
-      "icon": "📚"
-    },
-    {
       "name": "Stripe",
       "url": "https://dashboard.stripe.com",
       "icon": "💳"
