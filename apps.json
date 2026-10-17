@@ -215,11 +215,6 @@
       "icon": "📚"
     },
     {
-      "name": "Earn",
-      "url": "https://earnhaus.com/members",
-      "icon": "💵"
-    },
-    {
       "name": "Stripe",
       "url": "https://dashboard.stripe.com",
       "icon": "💳"
