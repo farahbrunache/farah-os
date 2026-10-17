@@ -175,7 +175,7 @@
       "icon": "🚩"
     },
     {
-      "name": "Ops - Railway",
+      "name": "Railway Dash",
       "url": "https://railway.com/dashboard",
       "icon": "🚂"
     },
@@ -210,16 +210,6 @@
       "icon": "💬"
     },
     {
-      "name": "Wiki",
-      "url": "https://github.com/chargingthefuture/mono/wiki",
-      "icon": "📚"
-    },
-    {
-      "name": "Earn",
-      "url": "https://earnhaus.com/members",
-      "icon": "💵"
-    },
-    {
       "name": "Stripe",
       "url": "https://dashboard.stripe.com",
       "icon": "💳"
@@ -231,7 +221,7 @@
     },
     {
       "name": "Look Ma",
-      "url": "https://www.chargingthefuture.com/look-ma-i-fixed-it",
+      "url": "https://www.chargingthefuture.com/look-ma",
       "icon": "🔧"
     },
     {
@@ -280,11 +270,6 @@
       "icon": "❓"
     },
     {
-      "name": "Quora",
-      "url": "https://www.quora.com",
-      "icon": "💬"
-    },
-    {
       "name": "Showmyip.com",
       "url": "https://showmyip.com",
       "icon": "🌍"
@@ -323,6 +308,11 @@
       "name": "Infisical",
       "url": "https://infisical-staging-f62b.up.railway.app/",
       "icon": "🔒"
+    },
+    {
+      "name": "GitHub Repos",
+      "url": "https://github.com/repos",
+      "icon": "📦"
     }
   ]
 }
