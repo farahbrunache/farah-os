@@ -313,6 +313,11 @@
       "name": "GitHub Repos",
       "url": "https://github.com/repos",
       "icon": "📦"
+    },
+    {
+      "name": "CTF Demo Videos",
+      "url": "https://github.com/chargingthefuture/chargingthefuture/releases/tag/demo-videos",
+      "icon": "🎥"
     }
   ]
 }
