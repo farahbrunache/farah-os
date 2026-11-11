@@ -1,7 +1,7 @@
 {
-  "name": "Coffee Shop",
-  "short_name": "Coffee Shop",
-  "description": "Coffee shop background noise with an offline download",
+  "name": "Heavy Rain",
+  "short_name": "Heavy Rain",
+  "description": "Gapless heavy rain loop with an offline download",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

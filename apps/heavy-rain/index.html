@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Heavy Rain</title>
+
+<!-- PWA / iOS home-screen -->
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#151918">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Heavy Rain">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+
+<link rel="stylesheet" href="../../shared/fonts.css">
+<link rel="stylesheet" href="../../shared/theme.css">
+<style>
+  .back{display:inline-block;color:var(--muted);text-decoration:none;font-size:13px;margin-bottom:4px;}
+  .back:hover{color:var(--amber);}
+
+  .play{display:block;width:150px;height:150px;margin:8px auto 18px;border-radius:50%;
+    border:1px solid var(--line);background:var(--panel-2);color:var(--amber);font-size:52px;
+    cursor:pointer;user-select:none;transition:transform .05s,background .15s;}
+  .play:active{transform:scale(.95);}
+  .play.on{background:var(--amber);border-color:var(--amber);color:#151918;}
+  .state{text-align:center;font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:600;
+    text-transform:uppercase;letter-spacing:.08em;font-size:13px;color:var(--muted);margin-bottom:6px;}
+
+  input[type=range]{padding:0;border:none;background:none;accent-color:var(--amber);height:28px;}
+
+  .dl{display:block;box-sizing:border-box;text-align:center;text-decoration:none;width:100%;border:1px solid var(--amber);background:var(--amber);color:#151918;
+    font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;text-transform:uppercase;
+    letter-spacing:.04em;font-size:15px;border-radius:10px;padding:13px;cursor:pointer;}
+  .dl:disabled{opacity:.6;cursor:default;}
+  .note{color:var(--muted);font-size:12px;line-height:1.5;margin:10px 0 0;}
+</style>
+</head>
+<body>
+  <a class="back" href="../../" id="backOS">&lsaquo; OS</a>
+  <div class="header"><div><h1>Heavy Rain</h1><p class="sub">Heavy rain. Loops without gaps.</p></div></div>
+
+  <button class="play" id="play" aria-label="Play">&#9654;</button>
+  <div class="state" id="state">Stopped</div>
+
+  <div class="card" id="volCard">
+    <div class="lbl">Volume <span class="hint" id="volTxt"></span></div>
+    <input type="range" id="vol" min="0" max="100" step="1">
+  </div>
+
+  <div class="card">
+    <div class="lbl">Download <span class="hint">60 min M4A · 42 MB</span></div>
+    <a class="dl" id="dl" href="rain-60min.m4a" download="heavy-rain-60min.m4a">Download 60 min</a>
+    <p class="note">One continuous hour, no gaps. Save it to Files or a music app to play with the screen locked or offline.</p>
+  </div>
+
+<audio id="snd" src="rain-60min.m4a" loop preload="none"></audio>
+<script src="../../shared/storage.js"></script>
+<script src="../../shared/pwa.js"></script>
+<script>
+registerPWA('sw.js');
+(function(){var b=document.getElementById('backOS');if(b){var m=location.pathname.match(/^(.*?\/)apps\//);if(m)b.href=m[1];}})();
+
+var SKEY='heavy-rain';
+var store={vol:60};
+var snd=document.getElementById('snd'), playing=false, loading=false;
+
+function $(id){ return document.getElementById(id); }
+async function load(){
+  try{ var r=await window.storage.get(SKEY); if(r&&r.value) store=Object.assign(store,JSON.parse(r.value)); }catch(e){}
+  snd.volume=level(); render();
+}
+async function persist(){ try{ await window.storage.set(SKEY, JSON.stringify(store)); }catch(e){} }
+
+function render(){
+  $('vol').value=store.vol;
+  $('volTxt').textContent=store.vol+'%';
+  $('play').classList.toggle('on',playing);
+  $('play').innerHTML=playing?'&#10074;&#10074;':'&#9654;';
+  $('play').setAttribute('aria-label',playing?'Stop':'Play');
+  $('state').textContent=loading?'Loading…':playing?'Playing':'Stopped';
+}
+function level(){ var v=store.vol/100; return v*v; }
+
+/* iOS ignores audio.volume (hardware buttons only) — hide the slider there */
+snd.volume=0.5; if(snd.volume!==0.5) $('volCard').style.display='none';
+
+/* the file is a seamless 60 min loop, so loop=true only wraps once an hour */
+$('play').addEventListener('click',function(){
+  if(playing){ snd.pause(); playing=false; loading=false; render(); return; }
+  playing=true; loading=true; render();
+  snd.play().catch(function(){ playing=false; loading=false; render(); });
+});
+snd.addEventListener('playing',function(){ loading=false; render(); });
+snd.addEventListener('waiting',function(){ if(playing){ loading=true; render(); } });
+snd.addEventListener('pause',function(){ if(playing){ playing=false; loading=false; render(); } });
+
+$('vol').addEventListener('input',function(){
+  store.vol=+this.value; $('volTxt').textContent=store.vol+'%'; snd.volume=level();
+});
+$('vol').addEventListener('change',persist);
+
+load();
+</script>
+</body>
+</html>

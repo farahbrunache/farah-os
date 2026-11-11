@@ -25,16 +25,16 @@
     },
     {
       "name": "White Noise",
-      "blurb": "White noise player — download a WAV to play offline",
+      "blurb": "Gapless 60-min white noise loop, with a download for offline",
       "url": "apps/white-noise/",
       "icon": "🌫️",
       "status": "active"
     },
     {
-      "name": "Coffee Shop",
-      "blurb": "Coffee shop background noise — download a 60-min WAV to play offline",
-      "url": "apps/coffee-shop/",
-      "icon": "☕",
+      "name": "Heavy Rain",
+      "blurb": "Gapless 60-min heavy rain loop, with a download for offline",
+      "url": "apps/heavy-rain/",
+      "icon": "🌧️",
       "status": "active"
     }
   ],

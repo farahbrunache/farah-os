@@ -1,6 +1,6 @@
 /* White Noise — service worker. Precaches the app shell (incl. shared fonts +
  * storage helper) so it runs fully offline. Bump VERSION to push updates. */
-var VERSION = 'white-noise-v2';
+var VERSION = 'white-noise-v3';
 var SHELL = [
   './',
   './index.html',
@@ -37,6 +37,8 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var req = e.request;
   if (req.method !== 'GET') return;
+  // 60 min audio streams with Range requests — let the browser fetch it directly
+  if (/\.m4a$/.test(new URL(req.url).pathname)) return;
   var url = new URL(req.url);
 
   // Navigations: network-first (fresh when online, cache offline). Avoids an
