@@ -1,6 +1,6 @@
 /* Heavy Rain — service worker. Precaches the app shell (incl. shared fonts +
  * storage helper) so it runs fully offline. Bump VERSION to push updates. */
-var VERSION = 'coffee-shop-v2';
+var VERSION = 'heavy-rain-v1';
 var SHELL = [
   './',
   './index.html',
@@ -28,7 +28,7 @@ self.addEventListener('activate', function (e) {
   e.waitUntil(
     caches.keys().then(function (names) {
       return Promise.all(names.map(function (n) {
-        if (n !== VERSION && n.indexOf('coffee-shop') === 0) return caches.delete(n);
+        if (n !== VERSION && n.indexOf('heavy-rain') === 0) return caches.delete(n);
       }));
     }).then(function () { return self.clients.claim(); })
   );
