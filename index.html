@@ -187,6 +187,18 @@ document.getElementById('export').onclick=async function(){
     exportedAt:new Date().toISOString(),
     data:window.storage.exportAll()
   };
+  // Guard: a store with no app data (wiped by Safari's 7-day eviction, or a
+  // different Safari/Home Screen context) would export an empty backup and
+  // still stamp "last export" as if it were good.
+  var appKeys=Object.keys(payload.data).filter(function(k){return k!==META_KEY;});
+  if(!appKeys.length){
+    alert('Nothing to export: this browser has no Farah OS app data.\n\n'+
+      'If you expected data here, it may have been cleared, or you are in a different '+
+      'browser / Home Screen app than usual. Do not overwrite older backups. '+
+      'Restore your latest good backup with Import.');
+    return;
+  }
+  if(!confirm('Export '+appKeys.length+' item(s)?')) return;
   // record the export time, then include it in the dump too
   await window.storage.set(META_KEY, JSON.stringify({lastExport:payload.exportedAt}));
   payload.data=window.storage.exportAll();
