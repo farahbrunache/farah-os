@@ -21,11 +21,11 @@
   .back:hover{color:var(--amber);}
 
   /* segmented nav */
-  .nav{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;background:var(--panel);
+  .nav{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:var(--panel);
     border:1px solid var(--line);border-radius:12px;padding:5px;margin-bottom:18px;}
   .nav button{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:600;
-    text-transform:uppercase;letter-spacing:.03em;font-size:12px;border:none;border-radius:8px;
-    padding:11px 4px;background:transparent;color:var(--muted);cursor:pointer;}
+    text-transform:uppercase;letter-spacing:.02em;font-size:11px;border:none;border-radius:8px;
+    padding:11px 2px;background:transparent;color:var(--muted);cursor:pointer;}
   .nav button.on{background:var(--amber);color:#151918;}
 
   /* filter chips */
@@ -100,6 +100,25 @@
   .cheat .lbl2{color:var(--amber);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;}
   .disc{font-size:11px;color:var(--muted);line-height:1.5;margin:4px 2px 0;font-style:italic;}
 
+  /* waist tab */
+  .wcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;}
+  .wentry{display:flex;align-items:center;justify-content:center;gap:14px;}
+  .wval{width:120px;text-align:center;background:var(--panel-2);border:1px solid var(--line);border-radius:12px;
+    color:var(--amber);font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;font-size:40px;
+    padding:6px 4px;font-variant-numeric:tabular-nums;}
+  .wval:focus{outline:none;border-color:var(--amber-dim);}
+  .wsave{width:100%;margin-top:14px;padding:15px;font-size:16px;}
+  .wnote{text-align:center;color:var(--muted);font-size:12px;margin-top:8px;}
+  .wstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+  .wstat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;}
+  .wstat .sv{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;font-size:24px;font-variant-numeric:tabular-nums;}
+  .wstat .sl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
+  .wchart{width:100%;height:150px;display:block;}
+  .wrow{display:flex;justify-content:space-between;align-items:center;padding:8px 2px;border-bottom:1px solid var(--line);font-size:14px;}
+  .wrow:last-child{border-bottom:none;}
+  .wrow .wd{color:var(--muted);}
+  .wrow .wv{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:600;font-size:17px;font-variant-numeric:tabular-nums;}
+  .wrow .del{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:2px 8px;}
   /* full-screen runner */
   .runner{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;
     max-width:520px;margin:0 auto;padding:22px 18px calc(20px + env(safe-area-inset-bottom));}
@@ -147,6 +166,7 @@
     <button data-tab="routines" class="on">Routines</button>
     <button data-tab="exercises">Exercises</button>
     <button data-tab="timers">Timers</button>
+    <button data-tab="waist">Waist</button>
     <button data-tab="plan">Plan</button>
   </div>
 
@@ -395,7 +415,7 @@ function esc(s){return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>
 
 /* ============================ STATE ============================ */
 const SKEY = 'roadwork';
-let store = { presets:[], lastInterval:{prep:10,work:30,rest:15,rounds:8}, mute:false, log:{} };
+let store = { presets:[], lastInterval:{prep:10,work:30,rest:15,rounds:8}, mute:false, log:{}, waist:[], waistGoal:32 };
 let tab = 'routines';
 let exFilter = 'all';
 let timerSeg = 'interval';
@@ -410,6 +430,8 @@ async function loadStore(){
   if(!Array.isArray(store.presets)) store.presets=[];
   if(!store.lastInterval) store.lastInterval={prep:10,work:30,rest:15,rounds:8};
   if(!store.log) store.log={};
+  if(!Array.isArray(store.waist)) store.waist=[];
+  if(!store.waistGoal) store.waistGoal=32;
 }
 function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
 function shortDate(k){const [y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d).toLocaleDateString(undefined,{month:'short',day:'numeric'});}
@@ -424,8 +446,78 @@ function render(){
   if(tab==='routines') renderRoutines();
   else if(tab==='exercises') renderExercises();
   else if(tab==='plan') renderPlan();
+  else if(tab==='waist') renderWaist();
   else renderTimers();
 }
+
+/* ============================ WAIST ============================ */
+let waistDraft = null;
+function waistSorted(){ return store.waist.slice().sort((a,b)=>a.d<b.d?-1:a.d>b.d?1:0); }
+function fmtIn(v){ return (Math.round(v*100)/100).toString(); }
+function renderWaist(){
+  const list = waistSorted();
+  const last = list[list.length-1];
+  const goal = store.waistGoal;
+  if(waistDraft==null) waistDraft = last ? last.v : 38;
+  const todays = store.waist.find(e=>e.d===today());
+  let stats = '';
+  if(last){
+    const first = list[0];
+    const over = last.v - goal;
+    const chg = last.v - first.v;
+    const overCol = over<=0 ? 'var(--green)' : 'var(--amber)';
+    stats = `<div class="wstats">
+      <div class="wstat"><div class="sv">${fmtIn(last.v)}"</div><div class="sl">Latest</div></div>
+      <div class="wstat"><div class="sv" style="color:${overCol}">${over<=0?'At goal':'+'+fmtIn(over)+'"'}</div><div class="sl">vs ${fmtIn(goal)}" goal</div></div>
+      <div class="wstat"><div class="sv">${chg>0?'+':''}${fmtIn(chg)}"</div><div class="sl">Since ${shortDate(first.d)}</div></div>
+    </div>`;
+  }
+  const rows = list.slice().reverse().slice(0,30).map(e=>`<div class="wrow">
+      <span class="wd">${shortDate(e.d)}</span><span class="wv">${fmtIn(e.v)}"</span>
+      <button class="del" aria-label="Delete" onclick="waistDel('${e.d}')">&times;</button></div>`).join('');
+  view().innerHTML = `
+    <div class="sub" style="margin:-4px 0 14px">Highest point above the belly button. Same time of day, tape snug, not tight. Goal: hold ${fmtIn(goal)}".</div>
+    <div class="wcard">
+      <div class="wentry">
+        <div class="tstep" onclick="waistBump(-0.25)">&minus;</div>
+        <input class="wval" id="wInput" type="number" inputmode="decimal" step="0.25" min="20" max="60" value="${fmtIn(waistDraft)}" oninput="waistDraft=parseFloat(this.value)">
+        <div class="tstep" onclick="waistBump(0.25)">+</div>
+      </div>
+      <button class="go wsave" onclick="waistSave()">${todays?'Update today':'Log today'}</button>
+      <div class="wnote">${todays?`Logged ${fmtIn(todays.v)}" today &mdash; saving replaces it.`:'Inches. ± steps by ¼".'}</div>
+    </div>
+    ${stats}
+    ${list.length>1?`<div class="wcard">${waistChart(list,goal)}</div>`:''}
+    ${rows?`<div class="section-title">History</div><div class="wcard" style="padding:6px 14px">${rows}</div>`:''}`;
+}
+function waistChart(list,goal){
+  const W=320,H=150,pl=30,pr=8,pt=10,pb=18;
+  const vals=list.map(e=>e.v).concat([goal]);
+  let lo=Math.floor(Math.min(...vals)-0.5), hi=Math.ceil(Math.max(...vals)+0.5);
+  const t0=new Date(list[0].d).getTime(), t1=new Date(list[list.length-1].d).getTime();
+  const x=d=>pl+(t1===t0?0.5:(new Date(d).getTime()-t0)/(t1-t0))*(W-pl-pr);
+  const y=v=>pt+(hi-v)/(hi-lo)*(H-pt-pb);
+  const pts=list.map(e=>`${x(e.d).toFixed(1)},${y(e.v).toFixed(1)}`).join(' ');
+  const step=(hi-lo)>8?2:1; let grid='';
+  for(let v=lo; v<=hi; v+=step) grid+=`<line x1="${pl}" x2="${W-pr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${pl-5}" y="${y(v)+3.5}" text-anchor="end" font-size="10" fill="var(--muted)">${v}</text>`;
+  const gy=y(goal);
+  return `<svg class="wchart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">${grid}
+    <line x1="${pl}" x2="${W-pr}" y1="${gy}" y2="${gy}" stroke="var(--green)" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <polyline points="${pts}" fill="none" stroke="var(--amber)" stroke-width="2" stroke-linejoin="round"/>
+    ${list.map(e=>`<circle cx="${x(e.d).toFixed(1)}" cy="${y(e.v).toFixed(1)}" r="2.5" fill="var(--amber)"/>`).join('')}
+    <text x="${pl}" y="${H-4}" font-size="10" fill="var(--muted)">${shortDate(list[0].d)}</text>
+    <text x="${W-pr}" y="${H-4}" font-size="10" fill="var(--muted)" text-anchor="end">${shortDate(list[list.length-1].d)}</text>
+  </svg>`;
+}
+function waistBump(d){ const v=(isNaN(waistDraft)?38:waistDraft)+d; waistDraft=Math.round(v*4)/4; const el=document.getElementById('wInput'); if(el) el.value=fmtIn(waistDraft); }
+function waistSave(){
+  const v=parseFloat(document.getElementById('wInput').value);
+  if(isNaN(v)||v<15||v>80) return;
+  const d=today();
+  store.waist=store.waist.filter(e=>e.d!==d); store.waist.push({d, v:Math.round(v*100)/100});
+  saveStore(); buzz(30); renderWaist();
+}
+function waistDel(d){ if(!confirm('Delete '+shortDate(d)+'?')) return; store.waist=store.waist.filter(e=>e.d!==d); saveStore(); renderWaist(); }
 
 function renderPlan(){
   const sched = [
