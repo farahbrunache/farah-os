@@ -109,7 +109,7 @@
   .wval:focus{outline:none;border-color:var(--amber-dim);}
   .wsave{width:100%;margin-top:14px;padding:15px;font-size:16px;}
   .wnote{text-align:center;color:var(--muted);font-size:12px;margin-top:8px;}
-  .wstats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+  .wstats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:12px;}
   .wstat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center;}
   .wstat .sv{font-family:'Barlow Semi Condensed','Inter',sans-serif;font-weight:700;font-size:24px;font-variant-numeric:tabular-nums;}
   .wstat .sl{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-top:2px;}
@@ -463,12 +463,9 @@ function renderWaist(){
   let stats = '';
   if(last){
     const first = list[0];
-    const over = last.v - goal;
     const chg = last.v - first.v;
-    const overCol = over<=0 ? 'var(--green)' : 'var(--amber)';
     stats = `<div class="wstats">
       <div class="wstat"><div class="sv">${fmtIn(last.v)}"</div><div class="sl">Latest</div></div>
-      <div class="wstat"><div class="sv" style="color:${overCol}">${over<=0?'At goal':'+'+fmtIn(over)+'"'}</div><div class="sl">vs ${fmtIn(goal)}" goal</div></div>
       <div class="wstat"><div class="sv">${chg>0?'+':''}${fmtIn(chg)}"</div><div class="sl">Since ${shortDate(first.d)}</div></div>
     </div>`;
   }
