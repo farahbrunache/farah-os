@@ -476,7 +476,6 @@ function renderWaist(){
       <span class="wd">${shortDate(e.d)}</span><span class="wv">${fmtIn(e.v)}"</span>
       <button class="del" aria-label="Delete" onclick="waistDel('${e.d}')">&times;</button></div>`).join('');
   view().innerHTML = `
-    <div class="sub" style="margin:-4px 0 14px">Highest point above the belly button. Same time of day, tape snug, not tight. Goal: hold ${fmtIn(goal)}".</div>
     <div class="wcard">
       <div class="wentry">
         <div class="tstep" onclick="waistBump(-0.25)">&minus;</div>
